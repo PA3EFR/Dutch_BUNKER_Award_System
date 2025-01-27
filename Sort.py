@@ -1,3 +1,6 @@
+"""
+This file was created and tested by Erwin - PA3EFR
+"""
 import pandas as pd
 
 # Bestandspad
