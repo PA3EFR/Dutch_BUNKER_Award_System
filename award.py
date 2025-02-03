@@ -3,6 +3,7 @@ import os
 from datetime import datetime
 from openpyxl import load_workbook
 
+import Sort
 
 # Function to validate input with repeated prompts
 def get_valid_input(prompt, valid_options):
@@ -76,8 +77,8 @@ try:
 
     # Choose a font and size (adjust the path if necessary)
     font_size_name = int(150)  # Fixed font size
-    font_size_number = int(150)  # Fixed font size
-    font_size_date = int(150)  # Fixed font size
+    font_size_number = int(100)  # Fixed font size
+    font_size_date = int(80)  # Fixed font size
 
     try:
         font_name = ImageFont.truetype("Bodoni Bd BT Bold.ttf", font_size_name)
@@ -93,23 +94,23 @@ try:
     text_name_bbox = draw.textbbox((0, 0), name, font=font_name)  # (left, top, right, bottom)
     text_name_width = text_name_bbox[2] - text_name_bbox[0]
     name_position = (
-        1500,  # 1500 pix from left
-        200  # 140 pix from the top (140 pixels at 300 DPI)
+        200,  #  pix from left
+        650  #  pix from the top (140 pixels at 300 DPI)
     )
 
     # Calculate the position of the serial number
     text_number_bbox = draw.textbbox((0, 0), serial_number, font=font_number)  # (left, top, right, bottom)
     text_number_width = text_number_bbox[2] - text_number_bbox[0]
     number_position = (
-        img.size[0] - text_number_width - 10,  # 10 pix from the right edge
-        img.size[1] - text_number_bbox[3] - 10  # 10 pix above the bottom
+        3200,  #  pixels from the left edge
+        505  #  pix from the top (140 pixels at 300 DPI)
     )
 
     # Calculate the position of the date
     text_date_bbox = draw.textbbox((0, 0), today_date, font=font_date)  # (left, top, right, bottom)
     date_position = (
-        100,  # 100 pixels from the left edge
-        img.size[1] - text_date_bbox[3] - 100  # 100 pixels from the bottom edge
+        3005,  #  pixels from the left edge
+        396  #  pix from the top (140 pixels at 300 DPI)
     )
 
     # Add the name with a white border and black text
@@ -119,7 +120,7 @@ try:
     draw_text_with_border(draw, serial_number, number_position, font_number, (0, 0, 0), (255, 255, 255), 5)
 
     # Add the date with a white border and red text
-    draw_text_with_border(draw, today_date, date_position, font_date, (255, 0, 0), (255, 255, 255), 5)
+    draw_text_with_border(draw, today_date, date_position, font_date, (0, 0, 0), (255, 255, 255), 5)
 
     # Convert the image to RGB (necessary for PDF export)
     if img.mode in ("RGBA", "P"):  # Check if conversion is needed
@@ -136,7 +137,7 @@ try:
         sheet = workbook.active
 
         # Add a new row with the data
-        sheet.append([color.capitalize(), type_option.capitalize(), name, serial_number, output_pdf_name])
+        sheet.append([color.capitalize(), type_option.capitalize(), name, serial_number, output_pdf_name, today_date])
 
         # Save the changes to the Excel file
         workbook.save("AwardGrantsOverview.xlsx")
@@ -147,3 +148,4 @@ try:
 
 except Exception as e:
     print(f"An error occurred: {e}")
+
